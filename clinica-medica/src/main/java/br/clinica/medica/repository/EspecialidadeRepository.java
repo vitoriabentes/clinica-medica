@@ -1,5 +1,6 @@
 package br.clinica.medica.repository;
 
+import br.clinica.medica.exceptions.ResourceNotFoundException;
 import br.clinica.medica.models.Especialidade;
 import br.clinica.medica.rowMapper.EspecialidadeRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,15 +38,14 @@ public class EspecialidadeRepository {
         }
     }
 
-    public Optional<Especialidade> buscarPorId(Long id){
+    public Especialidade buscarPorId(Long id){
         String query = """
                 SELECT * FROM ESPECIALIDADES WHERE ID = ?
                 """;
         try {
-            Especialidade especialidade = jdbcTemplate.queryForObject(query, especialidadeRowMapper, id);
-            return Optional.ofNullable(especialidade);
+            return jdbcTemplate.queryForObject(query, especialidadeRowMapper, id);
         }catch (RuntimeException e){
-            return Optional.empty();
+            throw new ResourceNotFoundException("Especialidade não existe no sistema");
         }
     }
 
@@ -82,5 +82,24 @@ public class EspecialidadeRepository {
             especialidade.setId(id);
         }
         return especialidade;
+    }
+
+    public void atualizarEspecialidade(Especialidade especialidadeAtualizada){
+        String query = """ 
+                   UPDATE ESPECIALIDADES
+                   SET NOME = ?, DESCRICAO = ?, ATUALIZADO_EM = ?
+                   WHERE ID = ?
+                """;
+
+        jdbcTemplate.update(query, especialidadeAtualizada.getNome(), especialidadeAtualizada.getDescricao(),
+                especialidadeAtualizada.getAtualizadoEm(), especialidadeAtualizada.getId());
+    }
+
+    public void deletarEspecialidade(Long id){
+        String query = """ 
+                DELETE FROM ESPECIALIDADES WHERE ID = ?
+                """;
+
+        jdbcTemplate.update(query, id);
     }
 }

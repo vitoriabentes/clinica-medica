@@ -44,13 +44,8 @@ public class MedicoService {
 
         Set<Especialidade> especialidades = new HashSet<>();
         for (Long id : medicoRequisicao.especialidades()){
-            try{
-                Especialidade especialidade = especialidadeRepository.buscarPorId(id).get();
-                especialidades.add(especialidade);
-
-            } catch (RuntimeException e) {
-                throw new RuntimeException("Especialidade não existe no sistema");
-            }
+            Especialidade especialidade = especialidadeRepository.buscarPorId(id);
+            especialidades.add(especialidade);
         }
 
         Medico medico = converteMedicoRequisicao(medicoRequisicao, especialidades);
