@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +44,7 @@ public class EspecialidadeRepository {
         try {
             return jdbcTemplate.queryForObject(query, especialidadeRowMapper, id);
         }catch (RuntimeException e){
-            throw new ResourceNotFoundException("Especialidade não existe no sistema");
+            throw new ResourceNotFoundException("Especialidade não cadastrada no sistema.");
         }
     }
 
@@ -65,15 +64,13 @@ public class EspecialidadeRepository {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String query = """
-            INSERT INTO ESPECIALIDADES (NOME, DESCRICAO, CRIADO_EM, ATUALIZADO_EM)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO ESPECIALIDADES (NOME, DESCRICAO)
+            VALUES (?, ?)
             """;
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, especialidade.getNome().toUpperCase());
             ps.setString(2, especialidade.getDescricao());
-            ps.setTimestamp(3, Timestamp.valueOf(especialidade.getCriadoEm()));
-            ps.setTimestamp(4, Timestamp.valueOf(especialidade.getAtualizadoEm()));
             return ps;
         }, keyHolder);
 

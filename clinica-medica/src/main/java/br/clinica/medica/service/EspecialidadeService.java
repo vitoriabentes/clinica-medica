@@ -63,7 +63,7 @@ public class EspecialidadeService {
         List<Medico> medicosAssociados = medicoEspecialiadeRepository.buscarMedicosAssociados(id);
         if(!medicosAssociados.isEmpty()){
             throw new RuntimeException(
-                    String.format("Não é possível excluir a especialidade, há %d médico(s) vinculados a esta especialidade",
+                    String.format("Não é possível excluir a especialidade, há %d médico(s) vinculado(s) a esta especialidade",
                             medicosAssociados.size())
             );
         }
@@ -82,9 +82,7 @@ public class EspecialidadeService {
         return new EspecialidadeResposta(
                 especialidade.getId(),
                 especialidade.getNome(),
-                especialidade.getDescricao(),
-                especialidade.getCriadoEm(),
-                especialidade.getAtualizadoEm()
+                especialidade.getDescricao()
         );
     }
 

@@ -22,15 +22,13 @@ public class MedicoEspecialiadeRepository {
     @Autowired
     private MedicoRowMapper medicoRowMapper;
 
-    public void cadastroEspecialidadesDoMedico(Medico medico){
+    public void associarEspecialidade(Long especialidadeId, Long medicoId) {
         String query = """
                 INSERT INTO MEDICO_ESPECIALIDADE (MEDICO_ID, ESPECIALIDADE_ID)
                 VALUES (?, ?)
                 """;
 
-        for(Especialidade especialidade : medico.getEspecialidades()){
-            jdbcTemplate.update(query, medico.getId(), especialidade.getId());
-        }
+        jdbcTemplate.update(query, medicoId, especialidadeId);
     }
 
     public List<Especialidade> buscarEspecialidadesDoMedico(Long idMedico){
@@ -51,5 +49,14 @@ public class MedicoEspecialiadeRepository {
                 """;
 
         return jdbcTemplate.query(query, medicoRowMapper, idEspecialidade);
+    }
+
+    public void dessasociarEspecialidade(Long especialidadeId, Long medicoId) {
+        String query = """
+                DELETE FROM MEDICO_ESPECIALIDADE
+                WHERE MEDICO_ID = ? AND ESPECIALIDADE_ID = ?
+                """;
+
+        jdbcTemplate.update(query, medicoId, especialidadeId);
     }
 }

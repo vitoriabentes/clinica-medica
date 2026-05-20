@@ -2,15 +2,18 @@ package br.clinica.medica.controllers;
 
 import br.clinica.medica.dtos.requests.EspecialidadeRequisicao;
 import br.clinica.medica.dtos.responses.EspecialidadeResposta;
+import br.clinica.medica.dtos.responses.MedicoResposta;
 import br.clinica.medica.models.Especialidade;
 import br.clinica.medica.service.EspecialidadeService;
 import br.clinica.medica.service.MedicoEspecialidadeService;
+import br.clinica.medica.service.MedicoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,6 +25,9 @@ public class EspecialidadeController {
 
     @Autowired
     private MedicoEspecialidadeService medicoEspecialidadeService;
+
+    @Autowired
+    private MedicoService medicoService;
 
     @PostMapping
     public ResponseEntity<?> cadastrarEspecialidade(@RequestBody @Valid EspecialidadeRequisicao especialidadeRequisicao){
@@ -42,8 +48,11 @@ public class EspecialidadeController {
 
     @GetMapping("/medicos-associados/{idEspecialidade}")
     public ResponseEntity<?> buscarMedicosAssociados(@PathVariable Long idEspecialidade){
+        List<MedicoResposta> medicosAssociados = medicoEspecialidadeService.buscarMedicosAssociados(idEspecialidade)
+                .stream()
+                .map(medicoService::converterMedico).toList();
         return ResponseEntity.status(HttpStatus.OK)
-                .body(medicoEspecialidadeService.buscarMedicosAssociados(idEspecialidade));
+                .body(medicosAssociados);
     }
 
     @PutMapping("/{id}")

@@ -1,5 +1,6 @@
 package br.clinica.medica.repository;
 
+import br.clinica.medica.exceptions.ResourceNotFoundException;
 import br.clinica.medica.models.Medico;
 import br.clinica.medica.rowMapper.MedicoRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,31 @@ public class MedicoRepository{
         }
     }
 
+    public Optional<Medico> buscarMedicoPorEmail(String email){
+        String query = """
+                SELECT * FROM MEDICOS WHERE EMAIL = ?
+                """;
+
+        try {
+            Medico medico = jdbcTemplate.queryForObject(query, medicoRowMapper, email);
+            return Optional.ofNullable(medico);
+
+        } catch (RuntimeException e) {
+            return Optional.empty();
+        }
+    }
+
+    public Medico buscarMedicoPorID(Long id){
+        String query = """
+                SELECT * FROM MEDICOS WHERE ID = ?
+                """;
+        try{
+            return jdbcTemplate.queryForObject(query, medicoRowMapper, id);
+        } catch (RuntimeException e) {
+            throw new ResourceNotFoundException("Médico não cadastrado no sistema.");
+        }
+    }
+
     public List<Medico> buscaMedicos(Optional<String> ordenarPor){
         String parametroDeOrdenacao = ordenarPor.orElse("NOME_COMPLETO");
         String query = """
@@ -92,6 +118,27 @@ public class MedicoRepository{
         }
 
         return medico;
+    }
+
+    public void atualizarMedico(Medico medico){
+        String query = """
+                UPDATE MEDICOS
+                   SET CRM = ?, CPF = ?, NOME_COMPLETO = ?, DATA_NASCIMENTO = ?,
+                   SEXO = ?, EMAIL = ?, TELEFONE = ?, STATUS = ?
+                   WHERE ID = ?
+                """;
+
+        jdbcTemplate.update(query,
+                medico.getCRM(), medico.getCPF(), medico.getNomeCompleto(), Date.valueOf(medico.getDataNascimento()),
+                medico.getSexo().toString(), medico.getEmail(), medico.getTelefone(),
+                medico.getStatus().toString(), medico.getId());
+    }
+
+    public void deletarMedico(Long medicoId){
+        String query = """
+                DELETE FROM MEDICOS WHERE ID = ?
+        """;
+        jdbcTemplate.update(query, medicoId);
     }
 
 }

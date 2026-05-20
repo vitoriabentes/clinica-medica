@@ -40,7 +40,7 @@ public record MedicoRequisicao(
         String telefone,
 
         @NotEmpty(message = "Pelo menos uma especialidade é obrigatória")
-        Set<@NotNull Long> especialidades,
+        Set<Long> especialidades,
 
         @NotNull(message = "Status é obrigatório")
         StatusProfissional status
