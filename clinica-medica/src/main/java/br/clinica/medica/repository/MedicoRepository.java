@@ -88,9 +88,6 @@ public class MedicoRepository{
     }
 
     public Medico cadastraMedico(Medico medico){
-        LocalDateTime now = LocalDateTime.now();
-        medico.setCriadoEm(now);
-        medico.setAtualizadoEm(now);
 
         String query = """
                 INSERT INTO MEDICOS (CRM, CPF, NOME_COMPLETO, DATA_NASCIMENTO, SEXO, EMAIL, TELEFONE, STATUS)
