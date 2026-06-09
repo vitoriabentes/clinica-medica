@@ -58,10 +58,6 @@ public class EspecialidadeRepository {
     }
 
     public Especialidade salvarEspecialidade(Especialidade especialidade){
-        LocalDateTime now = LocalDateTime.now();
-        especialidade.setCriadoEm(now);
-        especialidade.setAtualizadoEm(now);
-
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String query = """
             INSERT INTO ESPECIALIDADES (NOME, DESCRICAO)
