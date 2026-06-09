@@ -24,8 +24,8 @@ public class MedicoController {
     }
 
     @GetMapping
-    public ResponseEntity<?> buscarMedicos(@RequestParam Optional<String> ordenarPor){
-        return ResponseEntity.status(HttpStatus.OK).body(medicoService.buscarMedicos(ordenarPor));
+    public ResponseEntity<?> buscarMedicos(){
+        return ResponseEntity.status(HttpStatus.OK).body(medicoService.buscarMedicos());
     }
 
     @GetMapping("/{id}")

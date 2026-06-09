@@ -30,7 +30,7 @@ public class ConsultaRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String query = """
             INSERT INTO CONSULTAS (DATA_HORA_INICIO, DATA_HORA_TERMINO,
-                                   STATUS, MEDICO_ID, PACIENTE_ID, ESPECIALIDADE_ID)
+                                   STATUS_CONSULTA, MEDICO_ID, PACIENTE_ID, ESPECIALIDADE_ID)
             VALUES (?, ?, ?, ?, ?, ?)
             """;
         jdbcTemplate.update(connection -> {
@@ -88,7 +88,7 @@ public class ConsultaRepository {
     public void confirmarConsulta(Long id) {
         String query = """ 
                    UPDATE CONSULTAS
-                   SET STATUS = ?
+                   SET STATUS_CONSULTA = ?
                    WHERE ID = ?
                 """;
 
@@ -98,7 +98,7 @@ public class ConsultaRepository {
     public void reagendarConsulta(Consulta consultaAtualizada) {
         String query = """
             UPDATE CONSULTAS
-            SET DATA_HORA_INICIO = ?, DATA_HORA_TERMINO = ?, STATUS = ?,
+            SET DATA_HORA_INICIO = ?, DATA_HORA_TERMINO = ?, STATUS_CONSULTA = ?,
                 MEDICO_ID = ?, PACIENTE_ID = ?, ESPECIALIDADE_ID = ?
             WHERE ID = ?
             """;

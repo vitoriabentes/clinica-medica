@@ -16,7 +16,6 @@ public class Consulta {
     private Long id;
     private LocalDateTime dataHoraConsultaInicio;
     private LocalDateTime dataHoraConsultaTermino;
-    private int duracaoConsulta;
     private StatusConsulta statusConsulta;
     private Long medicoId;
     private Long pacienteId;

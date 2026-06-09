@@ -54,8 +54,8 @@ public class MedicoService {
         }
     }
 
-    public List<MedicoResposta> buscarMedicos(Optional<String> ordenarPor){
-        List<Medico> medicosCadastrados = medicoRepository.buscaMedicos(ordenarPor);
+    public List<MedicoResposta> buscarMedicos(){
+        List<Medico> medicosCadastrados = medicoRepository.buscaMedicos();
         for(Medico medico : medicosCadastrados){
             List<Especialidade> especialidades = medicoEspecialidadeRepository.buscarEspecialidadesDoMedico(medico.getId());
             medico.setEspecialidades(especialidades);
@@ -155,6 +155,7 @@ public class MedicoService {
                 .map(especialidadeService::converteEspecialidade)
                 .collect(Collectors.toSet());
         return new MedicoResposta(
+                medico.getId(),
                 medico.getCRM(),
                 medico.getCPF(),
                 medico.getNomeCompleto(),

@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 public record MedicoResposta(
+        Long  id,
         String CRM,
         String CPF,
         String nomeCompleto,

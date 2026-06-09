@@ -106,7 +106,7 @@ public class ConsultaService{
         if(dataHoraInicio.isBefore(LocalDateTime.now())){
             throw new RuntimeException("A data e hora da consulta não pode ser no passado.");
         }
-        if(dataHoraInicio.isAfter(LocalDateTime.now().plusMinutes(30))){
+        if(dataHoraInicio.isBefore(LocalDateTime.now().plusMinutes(30))){
             throw new RuntimeException("A consulta deve ser agendada com no máximo 30 minutos de antecedência.");
         }
         if(dataHoraInicio.getHour() < HORARIO_FUNCIONAMENTO_INICIO.getHour()){

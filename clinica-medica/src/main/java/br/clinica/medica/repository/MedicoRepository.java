@@ -77,12 +77,10 @@ public class MedicoRepository{
         }
     }
 
-    public List<Medico> buscaMedicos(Optional<String> ordenarPor){
-        String parametroDeOrdenacao = ordenarPor.orElse("NOME_COMPLETO");
+    public List<Medico> buscaMedicos(){
         String query = """
-                SELECT * FROM MEDICOS ORDER BY        
-                """
-                + parametroDeOrdenacao;
+                SELECT * FROM MEDICOS
+                """;
 
         return jdbcTemplate.query(query, medicoRowMapper);
     }

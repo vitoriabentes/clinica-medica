@@ -25,12 +25,12 @@ public class ConsultaController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("medico/{id}")
+    @GetMapping("medicos/{medicoId}")
     public ResponseEntity<?> consultarAgendaMedico(@PathVariable Long medicoId){
         return ResponseEntity.status(HttpStatus.OK).body(consultaService.buscarAgendaMedico(medicoId));
     }
 
-    @GetMapping("paciente/{id}")
+    @GetMapping("pacientes/{pacienteId}")
     public ResponseEntity<?> consultarAgendaPaciente(@PathVariable Long pacienteId){
         return ResponseEntity.status(HttpStatus.OK).body(consultaService.buscarAgendaPaciente(pacienteId));
     }
